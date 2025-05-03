@@ -2,10 +2,25 @@ import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
 import useFood from '@/hooks/useFood';
 import { Leaf, Apple, Flame, Pizza } from 'lucide-react';
-// import useFood from '@/hooks/useFood';
+import { useState } from 'react';
 
 export default function FoodButtons() {
   const { counts, recordFoodChoice } = useFood();
+  const [loadingStates, setLoadingStates] = useState({
+    healthy: false,
+    moderate: false,
+    unhealthy: false,
+    junk: false
+  });
+
+  const handleRecordChoice = async (type: keyof typeof counts) => {
+    setLoadingStates(prev => ({ ...prev, [type]: true }));
+    try {
+      await recordFoodChoice(type);
+    } finally {
+      setLoadingStates(prev => ({ ...prev, [type]: false }));
+    }
+  };
 
   const foodTypes = [
     {
@@ -50,16 +65,26 @@ export default function FoodButtons() {
               <Button
                 key={food.type}
                 variant={food.variant}
-                onClick={() => recordFoodChoice(food.type)}
+                onClick={() => handleRecordChoice(food.type)}
                 className="h-24 flex flex-col gap-2"
+                disabled={loadingStates[food.type]}
               >
-                <div className="flex items-center justify-center">
-                  {food.icon}
-                </div>
-                <span>{food.label}</span>
-                <span className="text-xs font-normal">
-                  {counts[food.type]} registros
-                </span>
+                {loadingStates[food.type] ? (
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-foreground"></div>
+                    <span>Registrando...</span>
+                  </div>
+                ) : (
+                  <>
+                    <div className="flex items-center justify-center">
+                      {food.icon}
+                    </div>
+                    <span>{food.label}</span>
+                    <span className="text-xs font-normal">
+                      {counts[food.type]} registros
+                    </span>
+                  </>
+                )}
               </Button>
             ))}
           </div>
@@ -75,7 +100,12 @@ export default function FoodButtons() {
                     {food.icon}
                     <span>{food.label}</span>
                   </div>
-                  <span className="font-medium">{counts[food.type]}</span>
+                  <div className="flex items-center gap-2">
+                    {loadingStates[food.type] && (
+                      <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-foreground"></div>
+                    )}
+                    <span className="font-medium">{counts[food.type]}</span>
+                  </div>
                 </div>
               ))}
             </CardContent>

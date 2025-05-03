@@ -65,7 +65,9 @@ export default function StatsView() {
                 <Tooltip 
                   formatter={(value, name, props) => [
                     `${value}%`, 
-                    `${props.payload.name} (${stats[props.payload.type as keyof typeof stats]})`
+                    `${props.payload.name} (${stats[props.payload.type as keyof typeof stats]})`,
+                    `${name}%`
+
                   ]}
                   contentStyle={{
                     backgroundColor: "hsl(0 0% 100%)",

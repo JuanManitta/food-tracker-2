@@ -11,11 +11,12 @@ export default function useFood() {
     unhealthy: 0,
     junk: 0
   });
+  const [loading, setLoading] = useState(true);
 
   const recordFoodChoice = async (type: FoodType) => {
     try {
       const user = auth.currentUser;
-      if (!user) return;
+      if (!user) throw new Error("Usuario no autenticado");
 
       await addDoc(collection(db, 'foodChoices'), {
         userId: user.uid,
@@ -32,30 +33,33 @@ export default function useFood() {
 
   useEffect(() => {
     const loadCounts = async () => {
-      const user = auth.currentUser;
-      if (!user) return;
-
+      setLoading(true);
       try {
+        const user = auth.currentUser;
+        if (!user) return;
+
         const q = query(
           collection(db, 'foodChoices'),
           where('userId', '==', user.uid)
         );
         const querySnapshot = await getDocs(q);
         
-        const newCounts = { healthy: 0, moderate: 0, unhealthy: 0, junk: 0 };
+        const counts = { healthy: 0, moderate: 0, unhealthy: 0, junk: 0 };
         querySnapshot.forEach(doc => {
           const type = doc.data().type as FoodType;
-          newCounts[type]++;
+          counts[type] += 1;
         });
 
-        setCounts(newCounts);
+        setCounts(counts);
       } catch (error) {
         console.error('Error loading counts:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
     loadCounts();
   }, []);
 
-  return { counts, recordFoodChoice };
+  return { counts, recordFoodChoice, loading };
 }

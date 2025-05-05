@@ -23,7 +23,7 @@ export default function App() {
 
   if (!user) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-neutral-50">
+      <div className="flex items-center justify-center">
         <Card className="w-full max-w-sm">
           <CardHeader>
             <CardTitle className="text-center">Registro de Alimentación</CardTitle>
@@ -71,7 +71,7 @@ export default function App() {
                     {user.displayName?.[0]?.toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
-                <span className="text-neutral-900">{user.displayName}</span>
+                {/* <span className="text-neutral-900">{user.displayName}</span> */}
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">

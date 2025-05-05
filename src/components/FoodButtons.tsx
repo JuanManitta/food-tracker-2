@@ -5,7 +5,7 @@ import { Leaf, Apple, Flame, Pizza } from 'lucide-react';
 import { useState } from 'react';
 
 export default function FoodButtons() {
-  const { counts, recordFoodChoice } = useFood();
+  const { counts, recordFoodChoice, loading: initialLoading } = useFood();
   const [loadingStates, setLoadingStates] = useState({
     healthy: false,
     moderate: false,
@@ -49,8 +49,23 @@ export default function FoodButtons() {
     }
   ];
 
+  if (initialLoading) {
+    return (
+      <div className="p-6 flex justify-center items-center h-[60vh]">
+        <Card className="max-w-md w-full">
+          <CardHeader>
+            <CardTitle className="text-center">Cargando datos...</CardTitle>
+          </CardHeader>
+          <CardContent className="flex justify-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-foreground"></div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   return (
-    <div className=" p-6">
+    <div className="p-6">
       <Card className="max-w-md mx-auto">
         <CardHeader>
           <CardTitle className="text-center">Registro de Alimentos</CardTitle>

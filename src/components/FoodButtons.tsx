@@ -50,7 +50,7 @@ export default function FoodButtons() {
   ];
 
   return (
-    <div className="container p-6">
+    <div className=" p-6">
       <Card className="max-w-md mx-auto">
         <CardHeader>
           <CardTitle className="text-center">Registro de Alimentos</CardTitle>

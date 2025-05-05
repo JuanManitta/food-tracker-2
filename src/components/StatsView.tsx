@@ -29,8 +29,8 @@ export default function StatsView() {
   ];
 
   return (
-    <div className="container p-6">
-      <Card className="max-w-2xl mx-auto">
+    <div className="p-6">
+      <Card>
         <CardHeader>
           <CardTitle className="text-foreground">Estadísticas de Consumo</CardTitle>
           <CardDescription>

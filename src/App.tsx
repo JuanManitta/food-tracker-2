@@ -43,9 +43,9 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-neutral-50">
-      <header className="border-b bg-white">
-        <div className="container flex h-16 items-center justify-between px-4">
+    <div>
+      <header className="border-b">
+        <div className="flex h-16 items-center justify-between px-4 max-w-7xl mt-auto mx-auto">
           <nav className="flex items-center space-x-4">
             <Button
               variant={activeView === "tracker" ? "secondary" : "ghost"}
@@ -83,7 +83,7 @@ export default function App() {
         </div>
       </header>
 
-      <main className="container py-8 px-4">
+      <main className="max-w-7xl mx-auto mt-4 px-4">
         {activeView === "tracker" ? <FoodButtons /> : <StatsView />}
       </main>
     </div>
